@@ -2,71 +2,66 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>ECOBYTE</title>
+    <title>ECOBYTE - Desafio Sustentável</title>
     <style>
         body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
-        .logo { width: 250px; margin-bottom: 20px; }
-        #mesa { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
+        .logo { width: 150px; margin-bottom: 20px; }
+        .placar { font-size: 1.5em; font-weight: bold; color: #1b5e20; margin: 20px; }
+        #mesa { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
         
-        .card { width: 180px; background: white; border-radius: 15px; padding: 15px; 
-                box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; transition: 0.3s; border-top: 8px solid #ccc; }
-        .card:hover { transform: translateY(-10px); }
-        
+        .card { width: 150px; height: 200px; background: #1b5e20; color: white; border-radius: 10px; 
+                display: flex; flex-direction: column; justify-content: center; align-items: center; 
+                cursor: pointer; border: 3px solid #000; }
+        .revelada { background: white; color: black; border-top: 8px solid #ccc; }
         .azul { border-top-color: #1976d2; }
         .vermelho { border-top-color: #d32f2f; }
         .verde { border-top-color: #388e3c; }
         .amarelo { border-top-color: #fbc02d; }
-
-        #resultado { display: none; margin-top: 20px; padding: 20px; background: white; border-radius: 10px; max-width: 500px; margin-left: auto; margin-right: auto; }
     </style>
 </head>
 <body>
 
-    <img src="logo.png" class="logo" alt="Logo Ecobyte">
-    <h1>Escolha suas ações</h1>
+    <img src="logo.png" class="logo">
+    <h1>Meta: 10 Pontos</h1>
+    <div class="placar">Pontuação Atual: <span id="score">0</span></div>
     <div id="mesa"></div>
-    <button onclick="finalizarJogo()" style="padding: 15px 30px; font-size: 1.2em; cursor: pointer;">Finalizar Jogo</button>
-    
-    <div id="resultado"></div>
+    <button onclick="comprarCarta()" style="padding:10px 20px;">Comprar Carta</button>
+    <button onclick="finalizarJogo()" style="padding:10px 20px;">Parar e Finalizar</button>
 
     <script>
-        let escolhas = [];
-        const baralho = [
-            { nome: "Tecnologia", cor: "azul", hist: "ENIAC (1945): O primeiro computador pesava 30 toneladas.", valor: 5 },
-            { nome: "Impacto", cor: "vermelho", hist: "Descarte incorreto contamina o solo com metais pesados.", valor: -8 },
-            { nome: "Solução", cor: "verde", hist: "Logística Reversa: O retorno dos produtos ao ciclo produtivo.", valor: 5 },
-            { nome: "Descarte", cor: "amarelo", hist: "Ecoponto: O local certo para a reciclagem segura.", valor: 5 }
+        let score = 0;
+        let cartCount = 0;
+        const deck = [
+            { nome: "Tecnologia", cor: "azul", hist: "Inovação Digital (+5)", valor: 5 },
+            { nome: "Impacto", cor: "vermelho", hist: "Descarte incorreto (-8)", valor: -8 },
+            { nome: "Logística", cor: "verde", hist: "Reversa Sustentável (+5)", valor: 5 },
+            { nome: "Ecoponto", cor: "amarelo", hist: "Reciclagem correta (+5)", valor: 5 }
         ];
 
-        const mesa = document.getElementById('mesa');
-        baralho.forEach(c => {
+        function comprarCarta() {
+            if (cartCount >= 6) return alert("Limite de cartas atingido!");
+            
+            const c = deck[Math.floor(Math.random() * deck.length)];
+            score += c.valor;
+            cartCount++;
+            
             const div = document.createElement('div');
-            div.className = `card ${c.cor}`;
-            div.innerHTML = `<h3>${c.nome}</h3><p style="font-size:0.9em">${c.hist}</p>`;
-            div.onclick = () => {
-                escolhas.push(c);
-                alert(c.nome + " selecionada!");
-            };
-            mesa.appendChild(div);
-        });
+            div.className = `card revelada ${c.cor}`;
+            div.innerHTML = `<h3>${c.nome}</h3><p>${c.hist}</p><b>${c.valor} pts</b>`;
+            document.getElementById('mesa').appendChild(div);
+            
+            document.getElementById('score').innerText = score;
+
+            if (score < 0) {
+                alert("Game Over! Você causou impacto negativo demais.");
+                location.reload();
+            }
+        }
 
         function finalizarJogo() {
-            let total = 0;
-            let html = "<h2>Resumo das suas escolhas:</h2>";
-            escolhas.forEach(c => {
-                total += c.valor;
-                html += `<p><strong>${c.nome}</strong>: ${c.valor} pts</p>`;
-            });
-            html += `<h3>Pontuação Final: ${total}</h3>`;
-            
-            if (total < 0) {
-                html += "<h2 style='color:red'>VOCÊ PERDEU! O impacto foi negativo.</h2>";
-            } else {
-                html += "<h2 style='color:green'>PARABÉNS! Você salvou o ecossistema.</h2>";
-            }
-            
-            document.getElementById('resultado').innerHTML = html;
-            document.getElementById('resultado').style.display = 'block';
+            if (score >= 10) alert("Parabéns! Você alcançou a meta sustentável!");
+            else alert("Você parou com " + score + " pontos. Precisa de 10 para vencer!");
+            location.reload();
         }
     </script>
 </body>
