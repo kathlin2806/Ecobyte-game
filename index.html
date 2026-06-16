@@ -1,19 +1,33 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
     <title>ECOBYTE</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 20px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
 </head>
 <body>
-    <div style="text-align: center;">
-        <h1>ECOBYTE</h1>
-        <div id="status">Mecânica: Mantenha o impacto abaixo de 10!</div>
-        <div class="placar">Impacto Acumulado: <span id="score">0</span> / 10</div>
-    </div>
-    <div id="mesa" class="mesa"></div>
-    <div id="hand" class="hand"></div>
+    <h1>ECOBYTE</h1>
+    <div id="placar">Impacto: 0 / 10</div>
+    <div id="hand" style="margin-top: 20px;"></div>
 
-    <script src="index.js"></script>
+    <script>
+        let score = 0;
+        const placar = document.getElementById('placar');
+        const hand = document.getElementById('hand');
+        const cartas = ["História", "Impacto", "Solução"];
+        
+        cartas.forEach(c => {
+            const btn = document.createElement('button');
+            btn.innerText = c;
+            btn.onclick = () => {
+                score += (c === "Solução" ? -3 : 1);
+                placar.innerText = "Impacto: " + score + " / 10";
+            };
+            hand.appendChild(btn);
+        });
+    </script>
 </body>
 </html>
