@@ -7,14 +7,17 @@
         body { font-family: sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
         .logo { width: 150px; margin-bottom: 20px; }
         #mesa { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px auto; min-height: 250px; }
-        
-        /* Estilo da carta */
-        .card { width: 150px; height: 200px; background: #1b5e20; color: white; border-radius: 10px; 
-                display: flex; flex-direction: column; justify-content: center; align-items: center; 
-                cursor: pointer; border: 3px solid #000; transition: 0.3s; }
-        
-        /* Sem efeito de espelhamento */
-        .revelada { background: white; color: black; border-top: 8px solid #ccc; }
+
+        /* Estrutura da Carta */
+        .card { width: 150px; height: 200px; perspective: 1000px; cursor: pointer; }
+        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+        .card.revelada .card-inner { transform: rotateY(180deg); }
+
+        /* Faces */
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px; border: 2px solid #333; }
+        .card-back { background-color: #1b5e20; display: flex; align-items: center; justify-content: center; }
+        .card-back img { width: 80%; }
+        .card-front { background: white; transform: rotateY(180deg); padding: 10px; box-sizing: border-box; border-top: 8px solid #ccc; }
         
         .azul { border-top-color: #1976d2; }
         .vermelho { border-top-color: #d32f2f; }
@@ -29,7 +32,7 @@
     <div id="mesa"></div>
     <div style="font-size: 1.5em; font-weight: bold; margin: 10px;">Pontos: <span id="score">0</span></div>
     
-    <button id="btnComprar" onclick="comprarCarta()" style="padding:15px 30px;">Comprar Carta</button>
+    <button onclick="comprarCarta()" style="padding:15px 30px;">Comprar Carta</button>
     <button onclick="location.reload()" style="padding:15px 30px;">Reiniciar</button>
 
     <script>
@@ -43,26 +46,35 @@
         ];
 
         function comprarCarta() {
-            if (cartCount >= 5) return alert("Limite de 5 cartas atingido!");
+            if (cartCount >= 5) return alert("Limite de 5 cartas!");
 
             const c = deck[Math.floor(Math.random() * deck.length)];
             cartCount++;
             
             const div = document.createElement('div');
-            div.className = `card revelada ${c.cor}`;
-            div.innerHTML = `<h3>${c.nome}</h3><p style="font-size:0.8em">${c.hist}</p><b>${c.valor} pts</b>`;
-            document.getElementById('mesa').appendChild(div);
+            div.className = 'card';
+            div.innerHTML = `
+                <div class="card-inner">
+                    <div class="card-back"><img src="logo.png"></div>
+                    <div class="card-front ${c.cor}">
+                        <h3>${c.nome}</h3><p style="font-size:0.8em">${c.hist}</p><b>${c.valor} pts</b>
+                    </div>
+                </div>
+            `;
             
-            score += c.valor;
-            document.getElementById('score').innerText = score;
+            div.onclick = function() {
+                if(this.classList.contains('revelada')) return;
+                this.classList.add('revelada');
+                score += c.valor;
+                document.getElementById('score').innerText = score;
+                verificarFim();
+            };
+            document.getElementById('mesa').appendChild(div);
+        }
 
-            if (score <= -10) {
-                alert("Game Over! Você atingiu 10 pontos negativos.");
-                location.reload();
-            } else if (score >= 10) {
-                alert("Parabéns! Meta sustentável atingida!");
-                location.reload();
-            }
+        function verificarFim() {
+            if (score <= -10) { alert("Game Over! Impacto negativo."); location.reload(); }
+            else if (score >= 10) { alert("Parabéns! Meta atingida!"); location.reload(); }
         }
     </script>
 </body>
