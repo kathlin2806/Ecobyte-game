@@ -2,14 +2,18 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>ECOBYTE</title>
     <link rel="stylesheet" href="style.css">
+    <title>ECOBYTE</title>
 </head>
 <body>
-    <h1>ECOBYTE</h1>
-    <div id="mesa"></div>
-    <div class="placar">Impacto: <span id="score">0 / 10</span></div>
-    <div id="hand"></div>
+    <div style="text-align: center;">
+        <h1>ECOBYTE</h1>
+        <div id="status">Mecânica: Mantenha o impacto abaixo de 10!</div>
+        <div class="placar">Impacto Acumulado: <span id="score">0</span> / 10</div>
+    </div>
+    <div id="mesa" class="mesa"></div>
+    <div id="hand" class="hand"></div>
+
     <script src="index.js"></script>
 </body>
 </html>
