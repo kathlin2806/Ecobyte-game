@@ -37,7 +37,6 @@
 
     <script>
         let score = 0;
-        let cartCount = 0;
         const deck = [
             { nome: "Tecnologia", cor: "azul", hist: "Inovação Digital (+5)", valor: 5 },
             { nome: "Impacto", cor: "vermelho", hist: "Descarte incorreto (-8)", valor: -8 },
@@ -46,39 +45,9 @@
         ];
 
         function comprarCarta() {
-            if (cartCount >= 5) return alert("Limite de 5 cartas atingido!");
-
             const c = deck[Math.floor(Math.random() * deck.length)];
-            cartCount++;
             
             const div = document.createElement('div');
             div.className = 'card';
             div.innerHTML = `
                 <div class="card-inner">
-                    <div class="card-back"><img src="logo.png"></div>
-                    <div class="card-front ${c.cor}">
-                        <h3>${c.nome}</h3><p style="font-size:0.8em">${c.hist}</p><b>${c.valor} pts</b>
-                    </div>
-                </div>
-            `;
-            
-            div.onclick = function() {
-                if(this.classList.contains('revelada')) return;
-                this.classList.add('revelada');
-                score += c.valor;
-                document.getElementById('score').innerText = score;
-                verificarFim();
-            };
-            document.getElementById('mesa').appendChild(div);
-        }
-
-        function verificarFim() {
-            if (score <= -10) { 
-                alert("Game Over! Você atingiu 10 pontos negativos."); 
-            } else if (score >= 12) { 
-                alert("Parabéns! Você alcançou a meta de 12 pontos!"); 
-            }
-        }
-    </script>
-</body>
-</html>
