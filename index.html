@@ -5,7 +5,7 @@
     <title>ECOBYTE</title>
     <style>
         body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
-        .logo { width: 200px; margin-bottom: 20px; }
+        .logo { width: 250px; margin-bottom: 20px; }
         #mesa { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 30px; }
         
         .card { width: 180px; background: white; border-radius: 15px; padding: 15px; 
@@ -17,15 +17,15 @@
         .verde { border-top-color: #388e3c; }
         .amarelo { border-top-color: #fbc02d; }
 
-        #resultado { display: none; margin-top: 20px; padding: 20px; background: white; border-radius: 10px; }
+        #resultado { display: none; margin-top: 20px; padding: 20px; background: white; border-radius: 10px; max-width: 500px; margin-left: auto; margin-right: auto; }
     </style>
 </head>
 <body>
 
-    <img src="logo.png" class="logo">
+    <img src="logo.png" class="logo" alt="Logo Ecobyte">
     <h1>Escolha suas ações</h1>
     <div id="mesa"></div>
-    <button onclick="finalizarJogo()" style="padding: 10px 20px; font-size: 1.2em;">Finalizar Jogo</button>
+    <button onclick="finalizarJogo()" style="padding: 15px 30px; font-size: 1.2em; cursor: pointer;">Finalizar Jogo</button>
     
     <div id="resultado"></div>
 
@@ -42,22 +42,22 @@
         baralho.forEach(c => {
             const div = document.createElement('div');
             div.className = `card ${c.cor}`;
-            div.innerHTML = `<h3>${c.nome}</h3><p style="font-size:0.8em">${c.hist}</p>`;
+            div.innerHTML = `<h3>${c.nome}</h3><p style="font-size:0.9em">${c.hist}</p>`;
             div.onclick = () => {
                 escolhas.push(c);
-                alert("Carta " + c.nome + " adicionada!");
+                alert(c.nome + " selecionada!");
             };
             mesa.appendChild(div);
         });
 
         function finalizarJogo() {
             let total = 0;
-            let html = "<h2>Resultado Final:</h2>";
+            let html = "<h2>Resumo das suas escolhas:</h2>";
             escolhas.forEach(c => {
                 total += c.valor;
-                html += `<p>${c.nome}: ${c.valor} pts</p>`;
+                html += `<p><strong>${c.nome}</strong>: ${c.valor} pts</p>`;
             });
-            html += `<h3>Total: ${total}</h3>`;
+            html += `<h3>Pontuação Final: ${total}</h3>`;
             
             if (total < 0) {
                 html += "<h2 style='color:red'>VOCÊ PERDEU! O impacto foi negativo.</h2>";
