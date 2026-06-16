@@ -4,51 +4,36 @@
     <meta charset="UTF-8">
     <title>ECOBYTE</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
+        body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
+        h1 { color: #1b5e20; }
+        .placar { font-size: 1.6em; font-weight: bold; color: #2e7d32; margin-bottom: 30px; }
         
-        /* Ajuste da Logo */
-        .logo { width: 300px; margin-bottom: 10px; }
-        
-        h1 { color: #1b5e20; margin-bottom: 5px; }
-        .placar { font-size: 1.4em; font-weight: bold; color: #2e7d32; margin-bottom: 20px; }
-        
-        /* Mesa estilo card game */
         #mesa { 
-            border: 4px dashed #81c784; 
-            height: 250px; 
-            width: 90%; 
-            margin: 0 auto; 
-            background-color: #ffffff;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 20px;
-            border-radius: 15px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; 
         }
 
-        /* Cores das cartas baseadas no seu design */
+        /* Estilo da Carta */
         .card { 
-            padding: 20px; 
-            width: 120px;
-            color: white; 
-            cursor: pointer; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
+            width: 200px; background: white; border-radius: 15px; padding: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; cursor: pointer;
+            border-top: 10px solid #ccc; transition: transform 0.2s;
         }
         .card:hover { transform: scale(1.05); }
-        
-        .card-azul { background-color: #1976d2; }
-        .card-vermelha { background-color: #d32f2f; }
-        .card-verde { background-color: #388e3c; }
-        .card-amarela { background-color: #fbc02d; color: #333; }
+        .card img { width: 100%; height: 120px; object-fit: cover; border-radius: 5px; }
+        .card h3 { margin: 10px 0; font-size: 1.1em; }
+        .card p { font-size: 0.85em; color: #555; height: 40px; }
+        .pontos { font-weight: bold; margin-top: 10px; font-size: 1.2em; }
+
+        /* Cores por tipo */
+        .azul { border-top-color: #1976d2; }
+        .vermelho { border-top-color: #d32f2f; }
+        .verde { border-top-color: #388e3c; }
+        .amarelo { border-top-color: #fbc02d; }
     </style>
 </head>
 <body>
 
-    <img src="logo.png" alt="Logo Ecobyte" class="logo">
+    <img src="logo.png" style="width: 200px;">
     <h1>ECOBYTE</h1>
     <div class="placar">Impacto: <span id="score">0</span></div>
     <div id="mesa"></div>
@@ -57,24 +42,28 @@
         let score = 0;
         const scoreDisplay = document.getElementById('score');
         const mesa = document.getElementById('mesa');
-        
-        // Definição das cartas com suas cores e valores
-        const deck = [
-            { nome: "Tecnologia", classe: "card-azul", valor: 5 },
-            { nome: "Impacto", classe: "card-vermelha", valor: -3 },
-            { nome: "Solução", classe: "card-verde", valor: 5 },
-            { nome: "Descarte", classe: "card-amarela", valor: 5 }
+
+        const baralho = [
+            { nome: "Tecnologia", cor: "azul", img: "https://via.placeholder.com/200x120/1976d2/white?text=ENIAC", texto: "Primeiro computador de grande escala.", valor: 5 },
+            { nome: "Impacto", cor: "vermelho", img: "https://via.placeholder.com/200x120/d32f2f/white?text=Solo", texto: "Metais pesados no solo.", valor: -3 },
+            { nome: "Solução", cor: "verde", img: "https://via.placeholder.com/200x120/388e3c/white?text=Logistica", texto: "Logística reversa eficiente.", valor: 5 },
+            { nome: "Descarte", cor: "amarelo", img: "https://via.placeholder.com/200x120/fbc02d/black?text=Ecoponto", texto: "Descarte correto de eletrônicos.", valor: 5 }
         ];
-        
-        deck.forEach(c => {
-            const btn = document.createElement('div');
-            btn.className = `card ${c.classe}`;
-            btn.innerText = c.nome;
-            btn.onclick = () => {
+
+        baralho.forEach(c => {
+            const card = document.createElement('div');
+            card.className = `card ${c.cor}`;
+            card.innerHTML = `
+                <img src="${c.img}">
+                <h3>${c.nome}</h3>
+                <p>${c.texto}</p>
+                <div class="pontos">${c.valor > 0 ? '+' : ''}${c.valor} pts</div>
+            `;
+            card.onclick = () => {
                 score += c.valor;
                 scoreDisplay.innerText = score;
             };
-            mesa.appendChild(btn);
+            mesa.appendChild(card);
         });
     </script>
 </body>
