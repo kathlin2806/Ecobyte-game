@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>ECOBYTE</title>
+    <title>ECOBYTE - Jogo de Sustentabilidade</title>
     <style>
         body { font-family: sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
         .logo { width: 150px; margin-bottom: 20px; }
@@ -14,10 +14,10 @@
         .card.revelada .card-inner { transform: rotateY(180deg); }
 
         /* Faces */
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px; border: 2px solid #333; }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px; border: 2px solid #333; box-sizing: border-box; }
         .card-back { background-color: #1b5e20; display: flex; align-items: center; justify-content: center; }
         .card-back img { width: 80%; }
-        .card-front { background: white; transform: rotateY(180deg); padding: 10px; box-sizing: border-box; border-top: 8px solid #ccc; }
+        .card-front { background: white; transform: rotateY(180deg); padding: 10px; border-top: 8px solid #ccc; }
         
         .azul { border-top-color: #1976d2; }
         .vermelho { border-top-color: #d32f2f; }
@@ -28,25 +28,25 @@
 <body>
 
     <img src="logo.png" class="logo">
-    <h1>Meta: 10 Pontos</h1>
+    <h1>Meta: 12 Pontos</h1>
     <div id="mesa"></div>
     <div style="font-size: 1.5em; font-weight: bold; margin: 10px;">Pontos: <span id="score">0</span></div>
     
-    <button onclick="comprarCarta()" style="padding:15px 30px;">Comprar Carta</button>
-    <button onclick="location.reload()" style="padding:15px 30px;">Reiniciar</button>
+    <button onclick="comprarCarta()" style="padding:15px 30px; cursor: pointer;">Comprar Carta</button>
+    <button onclick="location.reload()" style="padding:15px 30px; cursor: pointer;">Reiniciar Jogo</button>
 
     <script>
         let score = 0;
         let cartCount = 0;
         const deck = [
-            { nome: "Tecnologia", cor: "azul", hist: "Inovação Digital", valor: 5 },
-            { nome: "Impacto", cor: "vermelho", hist: "Descarte incorreto", valor: -8 },
-            { nome: "Logística", cor: "verde", hist: "Reversa Sustentável", valor: 5 },
-            { nome: "Descarte", cor: "amarelo", hist: "Reciclagem correta", valor: 5 }
+            { nome: "Tecnologia", cor: "azul", hist: "Inovação Digital (+5)", valor: 5 },
+            { nome: "Impacto", cor: "vermelho", hist: "Descarte incorreto (-8)", valor: -8 },
+            { nome: "Logística", cor: "verde", hist: "Reversa Sustentável (+5)", valor: 5 },
+            { nome: "Ecoponto", cor: "amarelo", hist: "Reciclagem correta (+5)", valor: 5 }
         ];
 
         function comprarCarta() {
-            if (cartCount >= 5) return alert("Limite de 5 cartas!");
+            if (cartCount >= 5) return alert("Limite de 5 cartas atingido!");
 
             const c = deck[Math.floor(Math.random() * deck.length)];
             cartCount++;
@@ -73,8 +73,11 @@
         }
 
         function verificarFim() {
-            if (score <= -10) { alert("Game Over! Impacto negativo."); location.reload(); }
-            else if (score >= 10) { alert("Parabéns! Meta atingida!"); location.reload(); }
+            if (score <= -10) { 
+                alert("Game Over! Você atingiu 10 pontos negativos."); 
+            } else if (score >= 12) { 
+                alert("Parabéns! Você alcançou a meta de 12 pontos!"); 
+            }
         }
     </script>
 </body>
