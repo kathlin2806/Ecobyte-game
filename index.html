@@ -5,13 +5,17 @@
     <title>ECOBYTE</title>
     <style>
         body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
-        .logo { width: 150px; margin-bottom: 20px; }
+        .logo { width: 150px; }
         #mesa { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px auto; min-height: 220px; }
         
-        .card { width: 150px; height: 200px; background: #1b5e20; color: white; border-radius: 10px; 
+        /* Estilo da Carta (Virada) */
+        .card { width: 150px; height: 200px; background: #1b5e20; border-radius: 10px; 
                 display: flex; flex-direction: column; justify-content: center; align-items: center; 
-                cursor: default; border: 3px solid #000; transition: 0.3s; }
-        .revelada { background: white; color: black; border-top: 8px solid #ccc; }
+                cursor: pointer; border: 3px solid #000; transition: transform 0.6s; }
+        .card img { width: 80px; }
+        
+        /* Estilo da Carta (Revelada) */
+        .revelada { background: white; color: black; border-top: 8px solid #ccc; transform: rotateY(180deg); }
         .azul { border-top-color: #1976d2; }
         .vermelho { border-top-color: #d32f2f; }
         .verde { border-top-color: #388e3c; }
@@ -25,36 +29,40 @@
     <div id="mesa"></div>
     <div style="font-size: 1.5em; font-weight: bold; margin: 10px;">Pontos: <span id="score">0</span></div>
     
-    <button onclick="comprarCarta()" style="padding:15px 30px; font-size: 1em;">Comprar Carta</button>
-    <button onclick="location.reload()" style="padding:15px 30px; font-size: 1em;">Reiniciar</button>
+    <button onclick="comprarCarta()" style="padding:15px 30px;">Comprar Carta</button>
+    <button onclick="location.reload()" style="padding:15px 30px;">Reiniciar</button>
 
     <script>
         let score = 0;
-        const mesa = document.getElementById('mesa');
         const deck = [
-            { nome: "Tecnologia", cor: "azul", hist: "Inovação Digital (+5)", valor: 5 },
-            { nome: "Impacto", cor: "vermelho", hist: "Descarte incorreto (-8)", valor: -8 },
-            { nome: "Logística", cor: "verde", hist: "Reversa Sustentável (+5)", valor: 5 },
-            { nome: "Ecoponto", cor: "amarelo", hist: "Reciclagem correta (+5)", valor: 5 }
+            { nome: "Tecnologia", cor: "azul", hist: "Inovação Digital", valor: 5 },
+            { nome: "Impacto", cor: "vermelho", hist: "Descarte incorreto", valor: -8 },
+            { nome: "Logística", cor: "verde", hist: "Reversa Sustentável", valor: 5 },
+            { nome: "Ecoponto", cor: "amarelo", hist: "Reciclagem correta", valor: 5 }
         ];
 
         function comprarCarta() {
             const c = deck[Math.floor(Math.random() * deck.length)];
-            score += c.valor;
-            
             const div = document.createElement('div');
-            div.className = `card revelada ${c.cor}`;
-            div.innerHTML = `<h3>${c.nome}</h3><p style="font-size:0.8em">${c.hist}</p><b>${c.valor} pts</b>`;
-            mesa.appendChild(div);
+            div.className = `card`;
+            div.innerHTML = `<img src="logo.png">`; // Verso
             
-            document.getElementById('score').innerText = score;
+            div.onclick = () => {
+                if(div.classList.contains('revelada')) return;
+                div.className = `card revelada ${c.cor}`;
+                div.innerHTML = `<h3>${c.nome}</h3><p>${c.hist}</p><b>${c.valor} pts</b>`;
+                score += c.valor;
+                document.getElementById('score').innerText = score;
+                verificarFim();
+            };
+            document.getElementById('mesa').appendChild(div);
+        }
 
+        function verificarFim() {
             if (score < 0) {
-                alert("Game Over! O impacto ambiental negativo foi alto demais.");
-                location.reload();
+                setTimeout(() => alert("Game Over! Você causou impacto negativo."), 500);
             } else if (score >= 10) {
-                alert("Parabéns! Você alcançou a meta sustentável!");
-                location.reload();
+                setTimeout(() => alert("Parabéns! Meta sustentável atingida!"), 500);
             }
         }
     </script>
