@@ -1,6 +1,0 @@
-body { font-family: sans-serif; background-color: #f4f4f9; padding: 20px; }
-.mesa { border: 2px dashed #333; height: 150px; margin: 20px 0; display: flex; justify-content: center; align-items: center; }
-.hand { display: flex; justify-content: center; gap: 10px; }
-.card { border: 1px solid #333; padding: 15px; background: white; cursor: pointer; border-radius: 8px; }
-.card:hover { background: #e0e0e0; }
-.placar { font-size: 1.2em; font-weight: bold; margin-bottom: 20px; }
