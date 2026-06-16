@@ -4,36 +4,42 @@
     <meta charset="UTF-8">
     <title>ECOBYTE</title>
     <style>
-        body { font-family: sans-serif; background-color: #e8f5e9; text-align: center; padding: 20px; }
-        h1 { color: #2e7d32; }
+        /* Estilo Geral */
+        body { font-family: 'Arial', sans-serif; background-color: #e8f5e9; text-align: center; padding: 20px; }
+        h1 { color: #2e7d32; margin-bottom: 10px; }
+        .placar { font-size: 1.5em; font-weight: bold; color: #1b5e20; margin-bottom: 20px; }
         
-        /* A MESA */
+        /* A Mesa */
         #mesa { 
-            border: 3px dashed #2e7d32; 
-            height: 200px; 
-            width: 80%; 
-            margin: 20px auto; 
+            border: 4px dashed #2e7d32; 
+            height: 250px; 
+            width: 85%; 
+            margin: 0 auto; 
             background-color: #ffffff;
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            gap: 15px;
+            gap: 20px;
+            border-radius: 15px;
         }
-        
-        /* AS CARTAS */
+
+        /* As Cartas */
         .card { 
-            padding: 20px; 
+            padding: 25px 30px; 
             background: #4caf50; 
             color: white; 
             cursor: pointer; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             font-weight: bold; 
+            font-size: 1.1em;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .card:hover { background: #388e3c; }
-        .placar { font-size: 1.5em; font-weight: bold; margin: 20px; }
+        .card:hover { background: #388e3c; transform: scale(1.05); }
     </style>
 </head>
 <body>
+
     <h1>ECOBYTE</h1>
     <div class="placar">Impacto: <span id="score">0</span> / 10</div>
     <div id="mesa"></div>
@@ -49,9 +55,16 @@
             btn.className = 'card';
             btn.innerText = nome;
             btn.onclick = () => {
-                score = Math.max(0, score + (nome === "Solução" ? -3 : 1));
+                // Lógica de impacto
+                score += (nome === "Solução" ? -3 : 1);
+                if (score < 0) score = 0;
                 scoreDisplay.innerText = score;
-                if (score >= 10) alert("Limite atingido!");
+                
+                if (score >= 10) {
+                    alert("O impacto chegou a 10! Cuidado com o ecossistema!");
+                    score = 0;
+                    scoreDisplay.innerText = score;
+                }
             };
             mesa.appendChild(btn);
         });
