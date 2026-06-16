@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>ECOBYTE</title>
     <style>
         body { font-family: sans-serif; text-align: center; padding: 20px; }
-        /* Esta é a sua mesa pontilhada */
-        #mesa { border: 2px dashed #333; height: 150px; margin: 20px auto; width: 80%; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        /* Aqui definimos a mesa visível */
+        #mesa { 
+            border: 2px dashed #333; 
+            height: 150px; 
+            margin: 20px auto; 
+            width: 80%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px; 
+        }
         button { padding: 10px 20px; cursor: pointer; }
     </style>
 </head>
@@ -14,7 +23,6 @@
     <h1>ECOBYTE</h1>
     <div id="placar">Impacto: 0 / 10</div>
     
-    <!-- O código abaixo coloca as cartas DENTRO da mesa -->
     <div id="mesa"></div>
 
     <script>
@@ -28,7 +36,6 @@
             btn.innerText = c;
             btn.onclick = () => {
                 score += (c === "Solução" ? -3 : 1);
-                // Evita ficar negativo
                 if (score < 0) score = 0;
                 placar.innerText = "Impacto: " + score + " / 10";
             };
