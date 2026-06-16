@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <title>ECOBYTE</title>
     <style>
-        /* Estilo Geral */
-        body { font-family: 'Arial', sans-serif; background-color: #e8f5e9; text-align: center; padding: 20px; }
-        h1 { color: #2e7d32; margin-bottom: 10px; }
-        .placar { font-size: 1.5em; font-weight: bold; color: #1b5e20; margin-bottom: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
         
-        /* A Mesa */
+        /* Ajuste da Logo */
+        .logo { width: 300px; margin-bottom: 10px; }
+        
+        h1 { color: #1b5e20; margin-bottom: 5px; }
+        .placar { font-size: 1.4em; font-weight: bold; color: #2e7d32; margin-bottom: 20px; }
+        
+        /* Mesa estilo card game */
         #mesa { 
-            border: 4px dashed #2e7d32; 
+            border: 4px dashed #81c784; 
             height: 250px; 
-            width: 85%; 
+            width: 90%; 
             margin: 0 auto; 
             background-color: #ffffff;
             display: flex; 
@@ -21,50 +24,55 @@
             align-items: center; 
             gap: 20px;
             border-radius: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
         }
 
-        /* As Cartas */
+        /* Cores das cartas baseadas no seu design */
         .card { 
-            padding: 25px 30px; 
-            background: #4caf50; 
+            padding: 20px; 
+            width: 120px;
             color: white; 
             cursor: pointer; 
-            border-radius: 12px; 
+            border-radius: 10px; 
             font-weight: bold; 
-            font-size: 1.1em;
-            transition: transform 0.2s, background 0.2s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
         }
-        .card:hover { background: #388e3c; transform: scale(1.05); }
+        .card:hover { transform: scale(1.05); }
+        
+        .card-azul { background-color: #1976d2; }
+        .card-vermelha { background-color: #d32f2f; }
+        .card-verde { background-color: #388e3c; }
+        .card-amarela { background-color: #fbc02d; color: #333; }
     </style>
 </head>
 <body>
 
+    <img src="logo.png" alt="Logo Ecobyte" class="logo">
     <h1>ECOBYTE</h1>
-    <div class="placar">Impacto: <span id="score">0</span> / 10</div>
+    <div class="placar">Impacto: <span id="score">0</span></div>
     <div id="mesa"></div>
 
     <script>
         let score = 0;
         const scoreDisplay = document.getElementById('score');
         const mesa = document.getElementById('mesa');
-        const cartas = ["História", "Impacto", "Solução"];
         
-        cartas.forEach(nome => {
+        // Definição das cartas com suas cores e valores
+        const deck = [
+            { nome: "Tecnologia", classe: "card-azul", valor: 5 },
+            { nome: "Impacto", classe: "card-vermelha", valor: -3 },
+            { nome: "Solução", classe: "card-verde", valor: 5 },
+            { nome: "Descarte", classe: "card-amarela", valor: 5 }
+        ];
+        
+        deck.forEach(c => {
             const btn = document.createElement('div');
-            btn.className = 'card';
-            btn.innerText = nome;
+            btn.className = `card ${c.classe}`;
+            btn.innerText = c.nome;
             btn.onclick = () => {
-                // Lógica de impacto
-                score += (nome === "Solução" ? -3 : 1);
-                if (score < 0) score = 0;
+                score += c.valor;
                 scoreDisplay.innerText = score;
-                
-                if (score >= 10) {
-                    alert("O impacto chegou a 10! Cuidado com o ecossistema!");
-                    score = 0;
-                    scoreDisplay.innerText = score;
-                }
             };
             mesa.appendChild(btn);
         });
