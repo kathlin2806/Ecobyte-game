@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <title>ECOBYTE</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 20px; }
-        /* Forçamos o estilo aqui para garantir que apareça */
+        body { font-family: Arial; text-align: center; padding: 50px; }
         #mesa { 
-            border: 2px dashed #333 !important; 
-            height: 150px !important; 
-            margin: 20px auto !important; 
-            width: 80% !important; 
-            display: flex !important; 
-            justify-content: center !important; 
-            align-items: center !important; 
-            gap: 10px !important; 
+            border: 3px dashed #333; 
+            height: 200px; 
+            width: 300px; 
+            margin: 20px auto; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px;
         }
         button { padding: 10px 20px; cursor: pointer; }
     </style>
@@ -28,15 +27,13 @@
         let score = 0;
         const placar = document.getElementById('placar');
         const mesa = document.getElementById('mesa');
-        const cartas = ["História", "Impacto", "Solução"];
         
-        cartas.forEach(c => {
+        ["História", "Impacto", "Solução"].forEach(texto => {
             const btn = document.createElement('button');
-            btn.innerText = c;
+            btn.innerText = texto;
             btn.onclick = () => {
-                score += (c === "Solução" ? -3 : 1);
-                if (score < 0) score = 0;
-                placar.innerText = "Impacto: " + score + " / 10";
+                score += (texto === "Solução" ? -3 : 1);
+                placar.innerText = "Impacto: " + Math.max(0, score) + " / 10";
             };
             mesa.appendChild(btn);
         });
