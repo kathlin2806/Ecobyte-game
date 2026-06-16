@@ -2,16 +2,15 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>ECOBYTE - Desafio Sustentável</title>
+    <title>ECOBYTE</title>
     <style>
         body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
         .logo { width: 150px; margin-bottom: 20px; }
-        .placar { font-size: 1.5em; font-weight: bold; color: #1b5e20; margin: 20px; }
-        #mesa { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+        #mesa { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px auto; min-height: 220px; }
         
         .card { width: 150px; height: 200px; background: #1b5e20; color: white; border-radius: 10px; 
                 display: flex; flex-direction: column; justify-content: center; align-items: center; 
-                cursor: pointer; border: 3px solid #000; }
+                cursor: default; border: 3px solid #000; transition: 0.3s; }
         .revelada { background: white; color: black; border-top: 8px solid #ccc; }
         .azul { border-top-color: #1976d2; }
         .vermelho { border-top-color: #d32f2f; }
@@ -23,14 +22,15 @@
 
     <img src="logo.png" class="logo">
     <h1>Meta: 10 Pontos</h1>
-    <div class="placar">Pontuação Atual: <span id="score">0</span></div>
     <div id="mesa"></div>
-    <button onclick="comprarCarta()" style="padding:10px 20px;">Comprar Carta</button>
-    <button onclick="finalizarJogo()" style="padding:10px 20px;">Parar e Finalizar</button>
+    <div style="font-size: 1.5em; font-weight: bold; margin: 10px;">Pontos: <span id="score">0</span></div>
+    
+    <button onclick="comprarCarta()" style="padding:15px 30px; font-size: 1em;">Comprar Carta</button>
+    <button onclick="location.reload()" style="padding:15px 30px; font-size: 1em;">Reiniciar</button>
 
     <script>
         let score = 0;
-        let cartCount = 0;
+        const mesa = document.getElementById('mesa');
         const deck = [
             { nome: "Tecnologia", cor: "azul", hist: "Inovação Digital (+5)", valor: 5 },
             { nome: "Impacto", cor: "vermelho", hist: "Descarte incorreto (-8)", valor: -8 },
@@ -39,29 +39,23 @@
         ];
 
         function comprarCarta() {
-            if (cartCount >= 6) return alert("Limite de cartas atingido!");
-            
             const c = deck[Math.floor(Math.random() * deck.length)];
             score += c.valor;
-            cartCount++;
             
             const div = document.createElement('div');
             div.className = `card revelada ${c.cor}`;
-            div.innerHTML = `<h3>${c.nome}</h3><p>${c.hist}</p><b>${c.valor} pts</b>`;
-            document.getElementById('mesa').appendChild(div);
+            div.innerHTML = `<h3>${c.nome}</h3><p style="font-size:0.8em">${c.hist}</p><b>${c.valor} pts</b>`;
+            mesa.appendChild(div);
             
             document.getElementById('score').innerText = score;
 
             if (score < 0) {
-                alert("Game Over! Você causou impacto negativo demais.");
+                alert("Game Over! O impacto ambiental negativo foi alto demais.");
+                location.reload();
+            } else if (score >= 10) {
+                alert("Parabéns! Você alcançou a meta sustentável!");
                 location.reload();
             }
-        }
-
-        function finalizarJogo() {
-            if (score >= 10) alert("Parabéns! Você alcançou a meta sustentável!");
-            else alert("Você parou com " + score + " pontos. Precisa de 10 para vencer!");
-            location.reload();
         }
     </script>
 </body>
