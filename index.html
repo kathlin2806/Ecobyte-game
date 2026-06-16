@@ -5,16 +5,16 @@
     <title>ECOBYTE</title>
     <style>
         body { font-family: sans-serif; text-align: center; padding: 20px; }
-        /* Aqui definimos a mesa visível */
+        /* Forçamos o estilo aqui para garantir que apareça */
         #mesa { 
-            border: 2px dashed #333; 
-            height: 150px; 
-            margin: 20px auto; 
-            width: 80%; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 10px; 
+            border: 2px dashed #333 !important; 
+            height: 150px !important; 
+            margin: 20px auto !important; 
+            width: 80% !important; 
+            display: flex !important; 
+            justify-content: center !important; 
+            align-items: center !important; 
+            gap: 10px !important; 
         }
         button { padding: 10px 20px; cursor: pointer; }
     </style>
@@ -22,7 +22,6 @@
 <body>
     <h1>ECOBYTE</h1>
     <div id="placar">Impacto: 0 / 10</div>
-    
     <div id="mesa"></div>
 
     <script>
