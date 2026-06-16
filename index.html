@@ -4,17 +4,13 @@
     <meta charset="UTF-8">
     <title>ECOBYTE</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
-        .logo { width: 150px; }
-        #mesa { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px auto; min-height: 220px; }
+        body { font-family: sans-serif; background-color: #f4f7f6; text-align: center; padding: 20px; }
+        .logo { width: 150px; margin-bottom: 20px; }
+        #mesa { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px auto; min-height: 250px; }
         
-        /* Estilo da Carta (Virada) */
-        .card { width: 150px; height: 200px; background: #1b5e20; border-radius: 10px; 
+        .card { width: 150px; height: 200px; background: #1b5e20; color: white; border-radius: 10px; 
                 display: flex; flex-direction: column; justify-content: center; align-items: center; 
-                cursor: pointer; border: 3px solid #000; transition: transform 0.6s; }
-        .card img { width: 80px; }
-        
-        /* Estilo da Carta (Revelada) */
+                cursor: pointer; border: 3px solid #000; transition: 0.3s; }
         .revelada { background: white; color: black; border-top: 8px solid #ccc; transform: rotateY(180deg); }
         .azul { border-top-color: #1976d2; }
         .vermelho { border-top-color: #d32f2f; }
@@ -24,7 +20,7 @@
 </head>
 <body>
 
-    <img src="logo.png" class="logo">
+    <img src="logo.png" class="logo" onerror="this.style.display='none'">
     <h1>Meta: 10 Pontos</h1>
     <div id="mesa"></div>
     <div style="font-size: 1.5em; font-weight: bold; margin: 10px;">Pontos: <span id="score">0</span></div>
@@ -38,19 +34,19 @@
             { nome: "Tecnologia", cor: "azul", hist: "Inovação Digital", valor: 5 },
             { nome: "Impacto", cor: "vermelho", hist: "Descarte incorreto", valor: -8 },
             { nome: "Logística", cor: "verde", hist: "Reversa Sustentável", valor: 5 },
-            { nome: "Ecoponto", cor: "amarelo", hist: "Reciclagem correta", valor: 5 }
+            { nome: "Descarte", cor: "amarelo", hist: "Reciclagem correta", valor: 5 }
         ];
 
         function comprarCarta() {
             const c = deck[Math.floor(Math.random() * deck.length)];
             const div = document.createElement('div');
-            div.className = `card`;
-            div.innerHTML = `<img src="logo.png">`; // Verso
+            div.className = 'card';
+            div.innerHTML = '<span>ECOBYTE</span>'; // Texto no verso caso a logo falhe
             
-            div.onclick = () => {
-                if(div.classList.contains('revelada')) return;
-                div.className = `card revelada ${c.cor}`;
-                div.innerHTML = `<h3>${c.nome}</h3><p>${c.hist}</p><b>${c.valor} pts</b>`;
+            div.onclick = function() {
+                if(this.classList.contains('revelada')) return;
+                this.classList.add('revelada', c.cor);
+                this.innerHTML = `<h3>${c.nome}</h3><p>${c.hist}</p><b>${c.valor} pts</b>`;
                 score += c.valor;
                 document.getElementById('score').innerText = score;
                 verificarFim();
@@ -59,11 +55,8 @@
         }
 
         function verificarFim() {
-            if (score < 0) {
-                setTimeout(() => alert("Game Over! Você causou impacto negativo."), 500);
-            } else if (score >= 10) {
-                setTimeout(() => alert("Parabéns! Meta sustentável atingida!"), 500);
-            }
+            if (score < 0) alert("Game Over! Impacto negativo atingido.");
+            else if (score >= 10) alert("Parabéns! Meta alcançada!");
         }
     </script>
 </body>
